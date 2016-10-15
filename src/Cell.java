@@ -1,4 +1,9 @@
-public class Cell extends jLabel implements MouseListener{
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.*;
+
+class Cell extends JLabel{
 
     boolean alive;
     int numNeighbours;
@@ -31,7 +36,7 @@ public class Cell extends jLabel implements MouseListener{
         else if(numNeighbours>3){
             setAlive(false);
         }
-        else if(numNeighbours==2||3){
+        else if(numNeighbours==2||numNeighbours==3){
             setAlive(true);
         }
         else if(!alive&&numNeighbours==3){
