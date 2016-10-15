@@ -17,30 +17,46 @@ public class GameOfLife{
     File birthFile = new File(birthFileName);
     Scanner sc;
 
-    void initGrid() {
+    void calculateNumNeighbours(){
+        //Iterate over grid
+        for(int i=0; i < grid.length; i++){
+            for(int j=0; j< grid[i].length;j++){
+                //Create an integer to save amount of found neighbouring cells
+                int neighbours = 0;
+                //This int resets to 0 for every iteration
+                //Iterate over positions around chosen grid position
+                for(int k=(i-1); k<=(i+1); k++){
+                    for(int l=(j-1); l<=(j+1);l++){
+                        if(grid[k][l].isAlive()){
+                            neighbours++;
+                        }
+                        //Make sure chosen grid position is not included
+                        if(k==i&&j==l){
+                            neighbours--;
+                        }
+                    }
+                }
+                //Set amount of neighbours for chosen grid position
+                grid[i][j].setNumNeighbours(neighbours);
+            }
+        }
+    }
+    void readInitial(){
+        //Open birthFile and handle exceptions
+        try{
+            sc = new Scanner(birthFile);
+        }catch(FileNotFoundException ex) {
+        }
+        //Read values for amount of columns and rows
+        row = sc.nextInt();
+        col = sc.nextInt();
+        //Create a Cell object at every grid position
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 grid[i][j] = new Cell();
             }
         }
-    }
-    void calculateNumNeighbours(){
-                for(int i=0; i < grid.length; i++){
-                    for(int j=0; j< grid[i].length;j++){
-                        if(grid[i][j-1].isAlive()){
-                            grid[i][j].setNumNeighbours(1);
-                        }
-                    }
-                }
-            }
-    void readInitial(){
-        try{
-            sc = new Scanner(birthFile);
-        }catch(FileNotFoundException ex) {
-            System.out.println("Whoops, couldn't find the birth file");
-        }
-        row = sc.nextInt();
-        col = sc.nextInt();
+        //Read grid and set cell states
         while(sc.hasNext()){
             for(int i = 0; i < col; i++){
                 for(int j = 0; j < row; j++){
@@ -54,4 +70,12 @@ public class GameOfLife{
             }
         }
     }
+    void nextGeneration(){
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[i].length;j++){
+                grid[i][j].update();
+            }
+        }
+    }
+
 }

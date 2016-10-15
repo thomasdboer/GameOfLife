@@ -6,7 +6,7 @@ import javax.swing.*;
 class Cell extends JLabel{
 
     boolean alive;
-    int numNeighbours;
+    int numNeighbours = 0;
 
     //isAlive method
     boolean isAlive(){
