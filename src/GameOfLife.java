@@ -16,27 +16,24 @@ public class GameOfLife{
     String birthFileName = "src\\birth.txt";
     File birthFile = new File(birthFileName);
     Scanner sc;
-    int width = 13;
-    int length = 15;
+    int width = 700;
+    int length = 700;
+    private Object g;
 
     void initJFrame(){
         JFrame frame = new JFrame("Game Of Life");
-        JPanel panel = new JPanel(new GridLayout(width,length));
+        JPanel panel = new JPanel(new GridLayout(width/20,length/20));
         frame.add(panel);
-        frame.setSize(width*10, length*10);
+        frame.setSize(width, length);
         frame.setVisible(true);
 
-        JButton[][] grid;
-        grid = new JButton[width][length];
 
-        for(int y=0; y<length; y++) {
-            for(int x=0; x<width; x++) {
-                grid[x][y] = new JButton("("+x+","+y+")");
-                panel.add(grid[x][y]);
-            }
-        }
+
 
     }
+
+
+
     void calculateNumNeighbours() {
         //Iterate over grid
         for (int i = 0; i < grid.length; i++) {
@@ -100,11 +97,31 @@ public class GameOfLife{
             }
         }
     }
+
+
+   
+    public void draw(Graphics g) {
+        int k;
+        int rows = length/20;
+        int columns = width/20;
+
+
+        int htOfRow = length / (rows);
+        for (k = 0; k < (rows); k++)
+            g.drawLine(0, k * htOfRow , width, k * htOfRow );
+
+        int wdOfRow = width / (columns);
+        for (k = 0; k < columns; k++)
+            g.drawLine(k*wdOfRow , 0, k*wdOfRow , length);
+    }
+
     public static void main(String[] args) {
         new GameOfLife().initJFrame();
         new GameOfLife().readInitial();
         new GameOfLife().calculateNumNeighbours();
         new GameOfLife().nextGeneration();
+        new GameOfLife().draw();
+
     }
 }
 
