@@ -13,15 +13,15 @@ public class GameOfLife{
     int row;
     int col;
     Cell[][] grid = new Cell[row][col];
-    String birthFileName = "src\\birth.txt";
+    String birthFileName = "C:\\Users\\s161061\\Documents\\GitHub\\GameOfLife\\src\\birth.txt";
     File birthFile = new File(birthFileName);
     Scanner sc;
 
     void initJFrame(){
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("Game Of Life");
         JPanel panel = new JPanel(new BorderLayout());
         frame.add(panel);
-        frame.setSize(300, 400);
+        frame.setSize(700, 700);
         frame.setVisible(true);
     }
     void calculateNumNeighbours() {
@@ -60,7 +60,7 @@ public class GameOfLife{
         try{row=sc.nextInt();}catch(NullPointerException e){System.out.println("No row given in file!");};
         try{col=sc.nextInt();}catch(NullPointerException e){System.out.println("No column given in file!");};
         //Initialize the grid to the size given
-        Cell[][] grid = new Cell[row][col];
+        grid = new Cell[row][col];
         //Create a Cell object at every grid position
         for (int i = 0; i < (row-1); i++) {
             for (int j = 0; j < (col-1); j++) {
