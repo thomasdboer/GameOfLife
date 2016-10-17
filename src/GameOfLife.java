@@ -13,16 +13,29 @@ public class GameOfLife{
     int row;
     int col;
     Cell[][] grid = new Cell[row][col];
-    String birthFileName = "C:\\Users\\s161061\\Documents\\GitHub\\GameOfLife\\src\\birth.txt";
+    String birthFileName = "src\\birth.txt";
     File birthFile = new File(birthFileName);
     Scanner sc;
+    int width = 13;
+    int length = 15;
 
     void initJFrame(){
         JFrame frame = new JFrame("Game Of Life");
-        JPanel panel = new JPanel(new BorderLayout());
+        JPanel panel = new JPanel(new GridLayout(width,length));
         frame.add(panel);
-        frame.setSize(700, 700);
+        frame.setSize(width*10, length*10);
         frame.setVisible(true);
+
+        JButton[][] grid;
+        grid = new JButton[width][length];
+
+        for(int y=0; y<length; y++) {
+            for(int x=0; x<width; x++) {
+                grid[x][y] = new JButton("("+x+","+y+")");
+                panel.add(grid[x][y]);
+            }
+        }
+
     }
     void calculateNumNeighbours() {
         //Iterate over grid
