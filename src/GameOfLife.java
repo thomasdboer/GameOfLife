@@ -34,11 +34,15 @@ public class GameOfLife{
         JPanel panel = new JPanel();
         frame.add(panel);
         panel.setPreferredSize(new Dimension(width, height));
-        panel.setLayout(new GridLayout(row, col, 2, 2)); // the 2, 2 stand for the gaps between cells
-        panel.setBackground(Color.RED);
+        panel.setLayout(new GridLayout(row, col, 4, 4)); // the 2, 2 stand for the gaps between cells
+        panel.setBackground(Color.BLACK);
         for(int i=0; i< row; i++){
             for(int j=0; j<col; j++){
                 grid[i][j].setOpaque(true);
+                grid[i][j].setBackground(Color.LIGHT_GRAY);
+                if(!grid[i][j].isAlive()){
+                    grid[i][j].setBackground(Color.WHITE);
+                }
                 panel.add(grid[i][j]);
             }
         }
