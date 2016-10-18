@@ -11,6 +11,7 @@ class Cell extends JLabel{
     boolean alive;
     int numNeighbours = 0;
 
+
     //isAlive method
     boolean isAlive(){
         return alive;

@@ -17,19 +17,32 @@ public class GameOfLife{
     File birthFile = new File(birthFileName);
     Scanner sc;
     int width = 700;
-    int length = 700;
+    int height = 700;
     private Object g;
 
     void initJFrame(){
+        readInitial();
         JFrame frame = new JFrame("Game Of Life");
-        JPanel panel = new JPanel(new GridLayout(width/20,length/20));
+        JPanel buttons = new JPanel();
+        frame.add(buttons, BorderLayout.SOUTH);
+        JButton start = new JButton("Start");
+        JButton stop = new JButton("Stop");
+        JButton nextgen = new JButton("Next Generation");
+        buttons.add(start);
+        buttons.add(stop);
+        buttons.add(nextgen);
+        JPanel panel = new JPanel();
         frame.add(panel);
-        frame.setSize(width, length);
+        panel.setPreferredSize(new Dimension(width, height));
+        panel.setLayout(new GridLayout(row, col, 2, 2)); // the 2, 2 stand for the gaps between cells
+        panel.setBackground(Color.RED);
+        for(int i = 0; i < grid.length; i++){
+            for(int j=0; j < grid[i].length; j++){
+                panel.add(grid[i][j]);
+            }
+        }
+        frame.setSize(width, height);
         frame.setVisible(true);
-
-
-
-
     }
 
 
@@ -61,8 +74,7 @@ public class GameOfLife{
 
     void readInitial() {
         //Open birthFile and handle exceptions
-        try {
-            sc = new Scanner(birthFile);
+        try {sc = new Scanner(birthFile);
         } catch (FileNotFoundException ex) {
             System.out.println("Did not find file!");
         }
@@ -99,29 +111,11 @@ public class GameOfLife{
     }
 
 
-   
-    public void draw(Graphics g) {
-        int k;
-        int rows = length/20;
-        int columns = width/20;
-
-
-        int htOfRow = length / (rows);
-        for (k = 0; k < (rows); k++)
-            g.drawLine(0, k * htOfRow , width, k * htOfRow );
-
-        int wdOfRow = width / (columns);
-        for (k = 0; k < columns; k++)
-            g.drawLine(k*wdOfRow , 0, k*wdOfRow , length);
-    }
-
     public static void main(String[] args) {
-        new GameOfLife().initJFrame();
         new GameOfLife().readInitial();
         new GameOfLife().calculateNumNeighbours();
         new GameOfLife().nextGeneration();
-        new GameOfLife().draw();
-
+        new GameOfLife().initJFrame();
     }
 }
 
