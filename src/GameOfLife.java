@@ -16,8 +16,8 @@ public class GameOfLife{
     String birthFileName = "src\\birth.txt";
     File birthFile = new File(birthFileName);
     Scanner sc;
-    int width = 700;
-    int height = 700;
+    int width = 900;
+    int height = 900;
     private Object g;
 
     void initJFrame(){
@@ -36,8 +36,9 @@ public class GameOfLife{
         panel.setPreferredSize(new Dimension(width, height));
         panel.setLayout(new GridLayout(row, col, 2, 2)); // the 2, 2 stand for the gaps between cells
         panel.setBackground(Color.RED);
-        for(int i = 0; i < grid.length; i++){
-            for(int j=0; j < grid[i].length; j++){
+        for(int i=0; i< row; i++){
+            for(int j=0; j<col; j++){
+                grid[i][j].setOpaque(true);
                 panel.add(grid[i][j]);
             }
         }
@@ -84,14 +85,14 @@ public class GameOfLife{
         //Initialize the grid to the size given
         grid = new Cell[row][col];
         //Create a Cell object at every grid position
-        for (int i = 0; i < (row-1); i++) {
-            for (int j = 0; j < (col-1); j++) {
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
                 grid[i][j] = new Cell();
             }
         }
         //Read grid and set cell states
-        for (int i = 0; i < (row-1); i++) {
-            for (int j = 0; j < (col-1); j++) {
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
                 String next = sc.next();
                 if (next.equals("*")) {
                     grid[i][j].setAlive(true);
@@ -113,9 +114,9 @@ public class GameOfLife{
 
     public static void main(String[] args) {
         new GameOfLife().readInitial();
+        new GameOfLife().initJFrame();
         new GameOfLife().calculateNumNeighbours();
         new GameOfLife().nextGeneration();
-        new GameOfLife().initJFrame();
     }
 }
 
