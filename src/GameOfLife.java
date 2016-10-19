@@ -24,7 +24,9 @@ public class GameOfLife extends MouseAdapter implements ActionListener {
     Timer timer;
 
     void initJFrame(){
-        readInitial();
+        row = 20;
+        col = 20;
+        createGrids();
 
         timer = new Timer(200, new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
@@ -39,9 +41,11 @@ public class GameOfLife extends MouseAdapter implements ActionListener {
         JButton stop = new JButton("Stop");
         JButton nextgen = new JButton("Next Generation");
 
+
         buttons.add(start);
         buttons.add(stop);
         buttons.add(nextgen);
+
 
         start.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
@@ -81,7 +85,12 @@ public class GameOfLife extends MouseAdapter implements ActionListener {
                     }
 
                     public void mousePressed(MouseEvent mouseEvent) {
-                        grid[finalI][finalJ].setAlive(true);
+                        if (!grid[finalI][finalJ].isAlive()) {
+                            grid[finalI][finalJ].setAlive(true);
+                        }
+                        else if (grid[finalI][finalJ].isAlive()) {
+                            grid[finalI][finalJ].setAlive(false);
+                        }
                     }
 
                     public void mouseReleased(MouseEvent mouseEvent) {
@@ -138,6 +147,19 @@ public class GameOfLife extends MouseAdapter implements ActionListener {
         }
     }
 
+    void createGrids() {
+        //Initialize the grid to the size given
+        grid = new Cell[row][col];
+        grid2 = new Cell[row][col];
+        //Create a Cell object at every grid position
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                grid[i][j] = new Cell();
+                grid2[i][j] = new Cell();
+            }
+        }
+    }
+
     void readInitial() {
         //Open birthFile and handle exceptions
         try {
@@ -159,6 +181,7 @@ public class GameOfLife extends MouseAdapter implements ActionListener {
                 grid2[i][j] = new Cell();
             }
         }
+
         //Read grid and set cell states
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
@@ -193,7 +216,6 @@ public class GameOfLife extends MouseAdapter implements ActionListener {
 
 
     public static void main(String[] args) {
-        new GameOfLife().readInitial();
         new GameOfLife().initJFrame();
     }
 
