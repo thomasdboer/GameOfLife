@@ -18,10 +18,10 @@ class Cell extends JLabel implements MouseListener{
     };
     public void mousePressed(MouseEvent mouseEvent) {
         if (!alive) {
-            alive=true;
+            setAlive(true);
         }
         else if (alive) {
-            alive=false;
+            setAlive(false);
         }
     }
 
