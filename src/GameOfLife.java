@@ -26,7 +26,11 @@ public class GameOfLife implements ActionListener {
     void initJFrame(){
         readInitial();
 
-        timer = new Timer(100, this);
+        timer = new Timer(100, new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                nextGeneration();
+            }
+        });
 
         JPanel buttons = new JPanel();
         frame.add(buttons, BorderLayout.SOUTH);
@@ -41,12 +45,12 @@ public class GameOfLife implements ActionListener {
 
         start.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                grid[4][4].setBackground(Color.GREEN);
+                timer.start();
             }
         });
         stop.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                grid[4][4].setBackground(Color.RED);
+                timer.stop();
             }
         });
         nextgen.addActionListener(new ActionListener() {
@@ -100,6 +104,7 @@ public class GameOfLife implements ActionListener {
                     }
                 //Set amount of neighbours for chosen grid position
                 grid[i][j].setNumNeighbours(neighbours);
+                grid2[i][j].setNumNeighbours(neighbours);
             }
         }
     }
@@ -117,10 +122,12 @@ public class GameOfLife implements ActionListener {
         try{col=sc.nextInt();}catch(NullPointerException e){System.out.println("No column given in file!");};
         //Initialize the grid to the size given
         grid = new Cell[row][col];
+        grid2 = new Cell[row][col];
         //Create a Cell object at every grid position
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 grid[i][j] = new Cell();
+                grid2[i][j] = new Cell();
             }
         }
         //Read grid and set cell states
@@ -129,8 +136,10 @@ public class GameOfLife implements ActionListener {
                 String next = sc.next();
                 if (next.equals("*")) {
                     grid[i][j].setAlive(true);
+                    grid2[i][j].setAlive(true);
                 } else if (next.equals(".")) {
                     grid[i][j].setAlive(false);
+                    grid2[i][j].setAlive(false);
                 }
             }
         }
@@ -141,8 +150,12 @@ public class GameOfLife implements ActionListener {
 
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                calculateNumNeighbours();
-                grid[i][j].update();
+                grid2[i][j].update();
+            }
+        }
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                grid[i][j].setAlive(grid2[i][j].isAlive());
             }
         }
     }
@@ -153,8 +166,6 @@ public class GameOfLife implements ActionListener {
     public static void main(String[] args) {
         new GameOfLife().readInitial();
         new GameOfLife().initJFrame();
-        //new GameOfLife().calculateNumNeighbours();
-        //new GameOfLife().nextGeneration();
     }
 
 
