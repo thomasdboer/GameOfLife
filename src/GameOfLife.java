@@ -8,7 +8,7 @@ import java.util.Scanner;
 import javax.swing.*;
 import java.io.*;
 
-public class GameOfLife implements ActionListener {
+public class GameOfLife extends MouseAdapter implements ActionListener {
     //Instance variables
     int row;
     int col;
@@ -26,7 +26,7 @@ public class GameOfLife implements ActionListener {
     void initJFrame(){
         readInitial();
 
-        timer = new Timer(100, new ActionListener() {
+        timer = new Timer(200, new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 nextGeneration();
             }
@@ -71,9 +71,38 @@ public class GameOfLife implements ActionListener {
                 panel.add(grid[i][j]);
             }
         }
+        for(int i=0; i< row; i++){
+            for(int j=0; j<col; j++){
+                final int finalI = i;
+                final int finalJ = j;
+                grid[i][j].addMouseListener(new MouseListener() {
+                    public void mouseClicked(MouseEvent mouseEvent) {
+
+                    }
+
+                    public void mousePressed(MouseEvent mouseEvent) {
+                        grid[finalI][finalJ].setAlive(true);
+                    }
+
+                    public void mouseReleased(MouseEvent mouseEvent) {
+
+                    }
+
+                    public void mouseEntered(MouseEvent mouseEvent) {
+
+                    }
+
+                    public void mouseExited(MouseEvent mouseEvent) {
+
+                    }
+                });
+
+            }
+        }
         frame.setSize(width, height);
         frame.setVisible(true);
     }
+
 
 
 
