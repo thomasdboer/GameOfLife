@@ -27,8 +27,8 @@ public class GameOfLife extends MouseAdapter implements ActionListener {
         row = 20;
         col = 20;
         createGrids();
-
-        timer = new Timer(200, new ActionListener() {
+        readInitial();
+        timer = new Timer(300, new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 nextGeneration();
             }
@@ -60,7 +60,6 @@ public class GameOfLife extends MouseAdapter implements ActionListener {
         nextgen.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 nextGeneration();
-
             }
         });
 
@@ -75,39 +74,7 @@ public class GameOfLife extends MouseAdapter implements ActionListener {
                 panel.add(grid[i][j]);
             }
         }
-        for(int i=0; i< row; i++){
-            for(int j=0; j<col; j++){
-                final int finalI = i;
-                final int finalJ = j;
-                grid[i][j].addMouseListener(new MouseListener() {
-                    public void mouseClicked(MouseEvent mouseEvent) {
 
-                    }
-
-                    public void mousePressed(MouseEvent mouseEvent) {
-                        if (!grid[finalI][finalJ].isAlive()) {
-                            grid[finalI][finalJ].setAlive(true);
-                        }
-                        else if (grid[finalI][finalJ].isAlive()) {
-                            grid[finalI][finalJ].setAlive(false);
-                        }
-                    }
-
-                    public void mouseReleased(MouseEvent mouseEvent) {
-
-                    }
-
-                    public void mouseEntered(MouseEvent mouseEvent) {
-
-                    }
-
-                    public void mouseExited(MouseEvent mouseEvent) {
-
-                    }
-                });
-
-            }
-        }
         frame.setSize(width, height);
         frame.setVisible(true);
     }

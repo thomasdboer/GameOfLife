@@ -6,12 +6,35 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
-class Cell extends JLabel{
+class Cell extends JLabel implements MouseListener{
 
     boolean alive;
     int numNeighbours = 0;
+    public Cell() {
+        this.addMouseListener(this);
+    }
+    public void mouseClicked(MouseEvent mouseEvent) {
 
+    };
+    public void mousePressed(MouseEvent mouseEvent) {
+        if (!alive) {
+            alive=true;
+        }
+        else if (alive) {
+            alive=false;
+        }
+    }
 
+    public void mouseReleased(MouseEvent mouseEvent) {
+
+    }
+
+    public void mouseEntered(MouseEvent mouseEvent) {
+
+    }
+    public void mouseExited(MouseEvent mouseEvent) {
+
+    }
     //isAlive method
     boolean isAlive(){return alive;}
 
