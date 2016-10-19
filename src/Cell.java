@@ -13,18 +13,17 @@ class Cell extends JLabel{
 
 
     //isAlive method
-    boolean isAlive(){
-        return alive;
-    }
+    boolean isAlive(){return alive;}
 
     //setAlive method
     void setAlive(boolean state){
         //check if given state is true and set alive appropriately
-        if(state){
-            alive = true;
+        alive = state;
+        if(this.isAlive()){
+            this.setBackground(Color.LIGHT_GRAY);
         }
         else{
-            alive = false;
+            this.setBackground(Color.WHITE);
         }
     }
 
@@ -36,19 +35,19 @@ class Cell extends JLabel{
     void update(){
         //If an alive cell has less than two neighbours, it dies
         if(alive && numNeighbours<2){
-            setAlive(false);
+            this.setAlive(false);
         }
         //If an alive cell has more than three neighbours, it dies
         else if(alive && numNeighbours>3){
-            setAlive(false);
+            this.setAlive(false);
         }
         //If an alive cell has two or three neighbours, it will live on
         else if(alive && (numNeighbours==2||numNeighbours==3)){
-            setAlive(true);
+            this.setAlive(true);
         }
         //If a dead cell has three neighbours, it comes back to life
         else if(!alive && numNeighbours==3){
-            setAlive(true);
+            this.setAlive(true);
         }
     }
 

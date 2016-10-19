@@ -4,34 +4,59 @@
 //Import some stuff
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Scanner;
 import javax.swing.*;
 import java.io.*;
 
-public class GameOfLife{
+public class GameOfLife implements ActionListener {
     //Instance variables
     int row;
     int col;
     Cell[][] grid = new Cell[row][col];
+    Cell[][] grid2 = new Cell[row][col];
     String birthFileName = "src\\birth.txt";
     File birthFile = new File(birthFileName);
     Scanner sc;
     int width = 900;
     int height = 900;
-    private Object g;
+    JFrame frame = new JFrame("Game Of Life");
+    JPanel panel = new JPanel();
+    Timer timer;
 
     void initJFrame(){
         readInitial();
-        JFrame frame = new JFrame("Game Of Life");
+
+        timer = new Timer(100, this);
+
         JPanel buttons = new JPanel();
         frame.add(buttons, BorderLayout.SOUTH);
+
         JButton start = new JButton("Start");
         JButton stop = new JButton("Stop");
         JButton nextgen = new JButton("Next Generation");
+
         buttons.add(start);
         buttons.add(stop);
         buttons.add(nextgen);
-        JPanel panel = new JPanel();
+
+        start.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                grid[4][4].setBackground(Color.GREEN);
+            }
+        });
+        stop.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                grid[4][4].setBackground(Color.RED);
+            }
+        });
+        nextgen.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                nextGeneration();
+
+            }
+        });
+
+
         frame.add(panel);
         panel.setPreferredSize(new Dimension(width, height));
         panel.setLayout(new GridLayout(row, col, 4, 4)); // the 2, 2 stand for the gaps between cells
@@ -39,10 +64,6 @@ public class GameOfLife{
         for(int i=0; i< row; i++){
             for(int j=0; j<col; j++){
                 grid[i][j].setOpaque(true);
-                grid[i][j].setBackground(Color.LIGHT_GRAY);
-                if(!grid[i][j].isAlive()){
-                    grid[i][j].setBackground(Color.WHITE);
-                }
                 panel.add(grid[i][j]);
             }
         }
@@ -52,25 +73,31 @@ public class GameOfLife{
 
 
 
+
     void calculateNumNeighbours() {
         //Iterate over grid
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
                 //Create an integer to save amount of found neighbouring cells
                 int neighbours = 0;
                 //This int resets to 0 for every grid position
                 //Iterate over positions around chosen grid position
                 for (int k = (i - 1); k <= (i + 1); k++) {
                     for (int l = (j - 1); l <= (j + 1); l++) {
-                        if (grid[k][l].isAlive()) {
-                            neighbours++;
+                        try {
+                            if (grid[k][l].isAlive()) {
+                                neighbours++;
+                            }
+                            //Make sure chosen grid position is not included
+                            if (k == i && j == l) {
+                                neighbours--;
+                            }
                         }
-                        //Make sure chosen grid position is not included
-                        if (k == i && j == l) {
-                            neighbours--;
+                        catch (ArrayIndexOutOfBoundsException ex) {
+
+                            }
                         }
                     }
-                }
                 //Set amount of neighbours for chosen grid position
                 grid[i][j].setNumNeighbours(neighbours);
             }
@@ -79,8 +106,10 @@ public class GameOfLife{
 
     void readInitial() {
         //Open birthFile and handle exceptions
-        try {sc = new Scanner(birthFile);
-        } catch (FileNotFoundException ex) {
+        try {
+            sc = new Scanner(birthFile);
+        }
+        catch (FileNotFoundException ex) {
             System.out.println("Did not find file!");
         }
         //Read values for amount of columns and rows and throw exceptions if not given
@@ -108,19 +137,29 @@ public class GameOfLife{
     }
 
     void nextGeneration() {
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
+        calculateNumNeighbours();
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                calculateNumNeighbours();
                 grid[i][j].update();
             }
         }
     }
 
 
+
+
     public static void main(String[] args) {
         new GameOfLife().readInitial();
         new GameOfLife().initJFrame();
-        new GameOfLife().calculateNumNeighbours();
-        new GameOfLife().nextGeneration();
+        //new GameOfLife().calculateNumNeighbours();
+        //new GameOfLife().nextGeneration();
+    }
+
+
+    public void actionPerformed(ActionEvent actionEvent) {
+
     }
 }
 
